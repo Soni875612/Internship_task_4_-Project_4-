@@ -1,0 +1,20 @@
+opencv-python-headless==4.10.0.84
+pytesseract>=0.3.10
+numpy>=1.24
+Pillow>=10.0
+pytest>=7.4
+streamlit>=1.35
+ 
+# IMPORTANT: install ONLY this OpenCV package. Do NOT also install
+# opencv-python, opencv-contrib-python, or opencv-contrib-python-headless
+# in the same environment — having more than one causes a broken/partial
+# cv2.dnn module (e.g. "module 'cv2.dnn' has no attribute 'readNetFromCaffe'").
+# If you hit that error, run:
+#   pip uninstall opencv-python opencv-python-headless opencv-contrib-python opencv-contrib-python-headless -y
+#   pip install opencv-python-headless==4.10.0.84
+ 
+# System-level dependency (NOT installed via pip — install separately):
+#   Tesseract OCR engine
+#   Windows : https://github.com/UB-Mannheim/tesseract/wiki (installer)
+#   macOS   : brew install tesseract
+#   Linux   : sudo apt install tesseract-ocr
