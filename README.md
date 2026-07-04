@@ -1,44 +1,63 @@
-# 👁️ DecodeLabs AI Project 4 — Image / Text Recognition (Basic)
+# 👁️ AI Vision Recognition — OCR & Object Detection
 
-**"Building the Machine's Optic Nerve" — The DecodeLabs Architect's Playbook for Image & Text Recognition**
-**Industrial Training Kit | Batch 2026 | Optional Mastery Phase**
+**"Building the Machine's Optic Nerve"** — DecodeLabs Industrial Training Kit · Project 4 · Batch 2026
 
-A Python implementation of both recognition paths described in the
-Project 4 brief — **OCR** and **Object Detection** — built on pre-trained
-models (Transfer Learning), full image pre-processing, and an
-80%-confidence "Gatekeeper" filter.
+A Python computer-vision system that implements **two recognition paths** using pre-trained models (Transfer Learning) — **Optical Character Recognition (OCR)** and **Object Detection** — wrapped in a full image pre-processing pipeline and an **80% "Gatekeeper" confidence filter** that rejects low-confidence results automatically.
 
 ---
 
-## 📌 What This Project Implements
+## 📌 What This Project Does
 
-| Spec Requirement (from the brief) | Status | Where |
+| Path | Task | Technology |
 |---|---|---|
-| Use a pre-trained model or simple library | ✅ | `pytesseract` (Tesseract OCR) + `MobileNet-SSD` (cv2.dnn) |
-| Perform recognition on sample input | ✅ | `sample_images/sample_text.jpg` + your own photos |
-| Display the output clearly | ✅ | Annotated images in `output/`, CLI printout, JSON mode |
-| Using AI libraries, understanding model outputs | ✅ | Confidence scores, bounding boxes, PSM tuning |
+| **Path 1 — OCR** | Extracts machine-readable text from an image | `pytesseract` (Tesseract OCR engine) |
+| **Path 2 — Object Detection** | Detects & locates 20 object classes (person, car, dog, chair, etc.) | `MobileNet-SSD` via `cv2.dnn` |
 
-### The 4 Gatekeeper Rules (validated automatically)
-| # | Rule | Implementation |
+Both paths enforce an **80% Gatekeeper Rule** — any detection or recognized word below 80% confidence is automatically rejected, so the system never silently reports low-quality results.
+
+---
+
+## ✅ The 4 Gatekeeper Rules
+
+| # | Rule | Where it's implemented |
 |---|---|---|
-| 1 | **Library Integration** | Clean `pytesseract` / `cv2.dnn` imports (`validate_gatekeeper.py`) |
+| 1 | **Library Integration** | Clean `pytesseract` / `cv2.dnn` imports |
 | 2 | **Pre-Processing Integrity** | Grayscale → Gaussian Blur → Deskew → Otsu Adaptive Thresholding (`preprocessing.py`) |
 | 3 | **Accuracy Benchmarking** | Minimum validated confidence ≥ 80% enforced everywhere |
 | 4 | **Visual Confirmation** | Annotated bounding-box / OCR images saved to `output/` |
 
-Run `python3 validate_gatekeeper.py` to check all four automatically.
+Run `python3 validate_gatekeeper.py` to check all four automatically, or use the **"Gatekeeper Validation"** tab in the web app.
 
 ---
 
-## 🧭 Choose Your Execution Path
+## 🖼️ Screenshots
 
-| | Path 1: OCR | Path 2: Object Detection |
-|---|---|---|
-| **Objective** | Extract machine-readable text strings | Identify & locate physical entities |
-| **Library** | `pytesseract` (Google Tesseract) | `cv2.dnn` + MobileNet-SSD |
-| **Pre-processing** | Grayscale → blur → deskew → adaptive threshold | 4D blob construction (`blobFromImage`) |
-| **Output** | Formatted text + per-word confidence | `(x, y, w, h)` bounding boxes + confidence |
+
+| OCR Tab | Object Detection Tab |
+
+<img width="1918" height="911" alt="image" src="https://github.com/user-attachments/assets/9c4b47bb-1764-4e3c-bde0-a6522cc6e5ae" />
+
+<img width="1891" height="697" alt="image" src="https://github.com/user-attachments/assets/b7dd07c8-65e0-41a4-8d7c-cca28416ca0a" />
+
+
+https://github.com/user-attachments/assets/9aa9392e-48be-4881-ba42-df7b1f70ed63
+
+| Pre-Processing Pipeline | Gatekeeper Validation |
+
+<img width="1828" height="748" alt="image" src="https://github.com/user-attachments/assets/d8c56ec2-b851-4877-8293-ace6ac9b25c3" />
+
+<img width="1860" height="648" alt="image" src="https://github.com/user-attachments/assets/77f0f362-cb5d-4a14-b1ca-73876dfd46c8" />
+
+---
+
+## 🌐 Web App — 4 Tabs
+
+Launch with `streamlit run app.py`:
+
+1. **📝 Path 1: OCR** — Upload an image (or use the bundled sample), choose a Tesseract Page Segmentation Mode, and extract text with per-word confidence scores
+2. **📦 Path 2: Object Detection** — Upload a photo and detect objects with an adjustable confidence slider
+3. **🔬 Pre-Processing Pipeline** — Visualizes the exact 4-step pipeline: Grayscale → Gaussian Blur → Deskew → Otsu Binary Threshold
+4. **✅ Gatekeeper Validation** — One-click automated check of all 4 Gatekeeper Rules
 
 ---
 
@@ -46,145 +65,111 @@ Run `python3 validate_gatekeeper.py` to check all four automatically.
 
 ```
 DecodeLabs_AI_Project4_VisionRecognition/
-├── main.py                    # Unified CLI — choose ocr / detect
-├── app.py                      # Streamlit web app (visual interface, 4 tabs)
-├── preprocessing.py            # Grayscale, blur, deskew, Otsu thresholding
-├── ocr_engine.py                # Path 1: pytesseract OCR pipeline
-├── object_detector.py           # Path 2: MobileNet-SSD object detection
-├── download_models.py           # Fetches MobileNet-SSD weights (already bundled)
-├── validate_gatekeeper.py        # Automated check of all 4 Gatekeeper Rules
-├── MODEL_SETUP.md                # Manual model download instructions
+├── app.py                    # Streamlit web app (4 tabs)
+├── main.py                   # Unified CLI — choose ocr / detect
+├── preprocessing.py          # Grayscale, blur, deskew, Otsu thresholding
+├── ocr_engine.py             # Path 1: pytesseract OCR pipeline
+├── object_detector.py        # Path 2: MobileNet-SSD object detection
+├── download_models.py        # Fetches MobileNet-SSD weights
+├── validate_gatekeeper.py    # Automated check of all 4 Gatekeeper Rules
+├── MODEL_SETUP.md            # Manual model download instructions
 ├── requirements.txt
 ├── sample_images/
-│   └── sample_text.jpg           # Synthetic test image (rotated + noisy text)
+│   └── sample_text.jpg       # Synthetic test image (rotated + noisy text)
 ├── models/
 │   ├── MobileNetSSD_deploy.prototxt
 │   └── MobileNetSSD_deploy.caffemodel
-├── output/                        # Annotated results land here
+├── output/                   # Annotated results saved here
 └── tests/
-    └── test_pipeline.py            # 10 pytest cases
+    └── test_pipeline.py
 ```
 
 ---
 
-## 🖥️ Web App (recommended — visual interface, no terminal-reading needed)
+## ⚙️ Installation & Usage
 
+**1. Clone the repository**
 ```bash
-streamlit run app.py
+git clone https://github.com/Soni875612/<repo-name>.git
+cd DecodeLabs_AI_Project4_VisionRecognition
 ```
 
-Opens at `http://localhost:8501` with 4 tabs:
-- **📝 Path 1: OCR** — upload an image, pick a PSM mode, see recognized text + confidence overlay
-- **📦 Path 2: Object Detection** — upload a photo, adjust the confidence slider, see bounding boxes live
-- **🔬 Pre-Processing Pipeline** — visualizes all 4 preprocessing stages side-by-side
-- **✅ Gatekeeper Validation** — one-click check of all 4 milestone rules with pass/fail indicators
-
----
-
-## 🚀 Getting Started (CLI)
-
-### 1. Install Python dependencies
+**2. Install Python dependencies**
 ```bash
 pip install -r requirements.txt
 ```
+> ⚠️ Install **only** `opencv-python-headless` (already pinned in `requirements.txt`). Do not also install `opencv-python`, `opencv-contrib-python`, or `opencv-contrib-python-headless` in the same environment — having more than one causes a broken `cv2.dnn` module.
 
-### 2. Install the Tesseract OCR engine (system-level, not pip)
-`pytesseract` is just a Python wrapper — it needs the actual Tesseract
-binary installed separately:
+**3. Install Tesseract OCR (system-level dependency, not via pip)**
+- **Windows:** [UB-Mannheim Tesseract installer](https://github.com/UB-Mannheim/tesseract/wiki)
+- **macOS:** `brew install tesseract`
+- **Linux:** `sudo apt install tesseract-ocr`
 
-| OS | Command |
-|---|---|
-| Windows | Download installer: https://github.com/UB-Mannheim/tesseract/wiki |
-| macOS | `brew install tesseract` |
-| Linux | `sudo apt install tesseract-ocr` |
-
-**Windows note:** if `pytesseract` can't find the binary, set it explicitly:
-```powershell
-$env:TESSERACT_CMD="C:\Program Files\Tesseract-OCR\tesseract.exe"
-```
-(or edit the path directly at the top of `ocr_engine.py`)
-
-### 3. Run OCR on the included sample
+**4. Run the web app**
 ```bash
-python3 main.py ocr --image sample_images/sample_text.jpg
-```
-```
-Recognized text:
-  DecodeLabs Project 4 Optical Character Recognition Test Batch 2026 - Industrial Training Kit
-
-Average confidence    : 93.77%
-80% Gatekeeper passed  : True
-Annotated output       : output/ocr_annotated.jpg
+python -m streamlit run app.py
 ```
 
-### 4. Run Object Detection on your own photo
+**5. Or use the CLI**
 ```bash
-python3 main.py detect --image path/to/your_photo.jpg
-```
-(Model files are already bundled — no extra download needed. Works best
-on photos containing people, cars, dogs, or other PASCAL VOC classes —
-see `MODEL_SETUP.md` for the full 20-class list.)
-
-### 5. Validate against all 4 Gatekeeper Rules
-```bash
-python3 validate_gatekeeper.py --image sample_images/sample_text.jpg
+python3 main.py ocr --image sample_images/sample_text.jpg --psm 3
+python3 main.py detect --image path/to/photo.jpg --confidence 0.80
 ```
 
-### 6. Run the test suite
+**6. Validate the Gatekeeper Rules**
 ```bash
-pytest tests/ -v
+python3 validate_gatekeeper.py
 ```
 
 ---
 
-## 🔬 Tuning OCR for Different Layouts (PSM modes)
+## 🧠 How It Works
 
-| Mode | Use case |
-|---|---|
-| `--psm 3` | Fully automatic — default, varied layouts |
-| `--psm 6` | Single uniform block of text (book pages) |
-| `--psm 7` | Single text line (number plates, headers) |
-| `--psm 11` | Sparse, scattered text (invoices) |
-
-```bash
-python3 main.py ocr --image your_invoice.jpg --psm 11
+**Path 1 — OCR Pipeline:**
+```
+Image → Grayscale → Gaussian Blur → Deskew → Otsu Adaptive Threshold → Tesseract OCR → 80% Confidence Filter → Text Output
 ```
 
----
+**Path 2 — Object Detection Pipeline:**
+```
+Image → blobFromImage (300×300, mean subtraction) → MobileNet-SSD Forward Pass → Coordinate Scaling → 80% Confidence Gate → Bounding Boxes
+```
 
-## 🧠 Key Concepts Demonstrated
-
-- **The IPO Model applied to vision:** an image is a 3D array
-  (Height × Width × 3 color channels), each pixel 0–255.
-- **Transfer Learning:** both paths reuse pre-trained models (Tesseract's
-  LSTM engine, MobileNet trained on ImageNet/PASCAL VOC) instead of
-  training from scratch — "why train an AI from scratch when you can
-  download a degree?"
-- **Otsu's adaptive thresholding:** dynamically computes the optimal
-  black/white cutoff per image, rather than a hardcoded value.
-- **Softmax / confidence scores:** the model never "knows" an answer —
-  it outputs a probability distribution, and the 80% gate filters out
-  low-confidence guesses to prevent "confident hallucinations."
-- **Coordinate scaling:** the network outputs normalized (0–1)
-  coordinates; these are multiplied by the real image's pixel
-  width/height to draw actual bounding boxes.
+The Object Detector recognizes 20 PASCAL VOC classes: person, car, dog, cat, bus, bicycle, chair, and more. Objects outside this list (e.g. a laptop or phone) will correctly report zero detections — that's expected model behavior, not a bug.
 
 ---
 
-## ⚠️ Limitations (by design, per the "Basic" scope of this milestone)
+## 🛠️ Tech Stack
 
-- Object detection only recognizes 20 PASCAL VOC classes (no custom
-  object training).
-- OCR accuracy depends heavily on image quality — very low-light or
-  heavily skewed (>45°) images may still fail deskewing.
-- This is a **basic/optional milestone** — it intentionally does not
-  cover model fine-tuning, custom dataset training, or GPU acceleration.
+`Python` · `OpenCV (cv2.dnn)` · `Tesseract OCR (pytesseract)` · `MobileNet-SSD` · `NumPy` · `Pillow` · `Streamlit` · `pytest`
 
 ---
 
-## 📞 Contact — DecodeLabs
+## 🎯 Key Learnings
 
-📞 +91 89330 06408
-✉️ decodelabs.tech@gmail.com
-🌐 www.decodelabs.tech
-📍 Greater Lucknow, India
+- Using pre-trained models via Transfer Learning instead of training from scratch
+- Building a systematic image pre-processing pipeline (grayscale, blur, deskew, adaptive thresholding)
+- Understanding and tuning confidence thresholds to filter unreliable AI output
+- Working with `cv2.dnn` for Caffe-based deep learning inference
+- Designing automated "Gatekeeper" validation checks for an ML pipeline
+- Shipping a multi-path computer vision system through both CLI and web interfaces
+
+---
+
+## 👩‍💻 Author
+
+**Soni**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/soni-devi-131a9938b/)
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github)](https://github.com/Soni875612)
+[![LeetCode](https://img.shields.io/badge/LeetCode-Profile-orange?logo=leetcode)](https://leetcode.com/u/soni_2007/)
+
+- 🔗 **LinkedIn:** [linkedin.com/in/soni-devi-131a9938b](https://www.linkedin.com/in/soni-devi-131a9938b/)
+- 💻 **GitHub:** [github.com/Soni875612](https://github.com/Soni875612)
+- 🧩 **LeetCode:** [leetcode.com/u/soni_2007](https://leetcode.com/u/soni_2007/)
+
+---
+
+## 📄 License
+
+Developed as part of the **DecodeLabs Industrial Training Kit**. Free to use for learning and reference purposes.
